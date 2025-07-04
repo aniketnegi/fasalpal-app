@@ -1,20 +1,42 @@
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Stack, SplashScreen, Slot } from 'expo-router';
+import { View } from 'react-native';
+import { AuthProvider } from '../lib/auth';
+import React, { useEffect } from 'react';
+import { useFonts } from 'expo-font';
 import '../global.css';
 
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Stack } from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(drawer)',
-};
+// SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  // const [loaded] = useFonts({
+  //   Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+  //   InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  // });
+
+  // useEffect(() => {
+  //   if (loaded) {
+  //     SplashScreen.hideAsync();
+  //   }
+  // }, [loaded]);
+
+  // if (!loaded) return null;
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Stack>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ title: 'Modal', presentation: 'modal' }} />
-      </Stack>
+    <GestureHandlerRootView className="flex-1">
+      <AuthProvider>
+        <RootNavigator />
+      </AuthProvider>
     </GestureHandlerRootView>
+  );
+}
+
+function RootNavigator() {
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="sign-in" />
+      <Stack.Screen name="sign-up" />
+      <Stack.Screen name="(app)" />
+    </Stack>
   );
 }

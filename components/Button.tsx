@@ -1,24 +1,39 @@
-import { forwardRef } from 'react';
-import { Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { Pressable, Text } from 'react-native';
+import { cn } from '~/lib/utils';
 
-type ButtonProps = {
+type Props = {
   title: string;
-} & TouchableOpacityProps;
-
-export const Button = forwardRef<View, ButtonProps>(({ title, ...touchableProps }, ref) => {
-  return (
-    <TouchableOpacity
-      ref={ref}
-      {...touchableProps}
-      className={`${styles.button} ${touchableProps.className}`}>
-      <Text className={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-});
-
-Button.displayName = 'Button';
-
-const styles = {
-  button: 'items-center bg-indigo-500 rounded-[28px] shadow-md p-4',
-  buttonText: 'text-white text-lg font-semibold text-center',
+  onPress: () => void;
+  disabled?: boolean;
+  variant?: 'primary' | 'secondary';
+  cls?: string;
 };
+
+export const AppButton = ({
+  title,
+  onPress,
+  disabled = false,
+  variant = 'primary',
+  cls = '',
+}: Props) => (
+  <Pressable
+    onPress={onPress}
+    disabled={disabled}
+    className={cn(
+      'h-12 items-center justify-center rounded-md',
+      variant === 'primary'
+        ? 'bg-darkGreen' // ⬅️ your theme colour
+        : 'border border-darkGreen',
+      disabled && 'opacity-50',
+      cls
+    )}>
+    <Text
+      className={
+        variant === 'primary'
+          ? 'text-base font-semibold text-white'
+          : 'text-base font-semibold text-darkGreen'
+      }>
+      {title}
+    </Text>
+  </Pressable>
+);
